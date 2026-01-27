@@ -1,0 +1,22 @@
+[
+    {
+        "Modelo":"PlayStation 5" ,
+        "Precio": 500 ,
+        "imagen":"/image/ps55.png"
+    },
+    {
+        "Modelo":"PlayStation 4" ,
+        "Precio": 400 ,
+        "imagen":"/image/ps4.png"
+    },
+    {
+        "Modelo":"PlayStation 3" ,
+        "Precio": 300 ,
+        "imagen":"/image/ps3.png"
+    },
+    {
+        "Modelo":"PlayStation 2" ,
+        "Precio": 300 ,
+        "imagen":"/image/PS2.png"
+    }
+]
