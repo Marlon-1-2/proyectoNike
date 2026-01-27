@@ -69,16 +69,18 @@ const cargarTienda = async () => {
 cargarTienda();
 
 //localStore
-//intentar recuperar los libros elegidos por el usuario
-let carrito=JSON.parse(localStorage.getItem("carrito-mandos"));
+//intentar recuperar los libros elegidos por el usuario y si no elgine ninguno no nos devuelve nada
+let carrito=JSON.parse(localStorage.getItem("carrito-mandos"))||[];
 
 //funcuion para actualizar el carrito
 const actualizarCotador = () =>{
     const contador = document.getElementById("carrito-contador");
     //si existe el contador que le pongamos la longitud del carrito
-    if(contador) contador.innerText=carrito.length;
+    if(contador)
+        contador.innerText=carrito.length;
+};
     contenedor.addEventListener("click", (e) =>{
-        const boton = e.target.closets(".btn-agregar");
+        const boton = e.target.closest(".btn-agregar");
         if(boton){
             const titulo = boton.dataset.Modelo;
             const precio = boton.dataset.Precio;
@@ -90,8 +92,8 @@ const actualizarCotador = () =>{
 
             //agregar al carrito
             carrito.push(modelo);
-
+        
             localStorage.setItem("carrito-mandos", JSON.stringify(carrito ));
+            actualizarCotador();
         }
     })
-}
