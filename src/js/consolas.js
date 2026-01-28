@@ -1,20 +1,17 @@
-import '../css/style.css';
-import 'flowbite';
+import "../css/style.css";
+import "flowbite";
+const banner = document.querySelector("#banner");
 const cambiarAnuncui = () => {
-    const banner = document.querySelector("#banner");
-
     if (banner.innerText === "ENVIO GRATUITO EN PEDIDOS SUPERIORES A $50") {
         banner.innerText = "Rebajas hasta el 50% - compra ahora";
         banner.classList.remove("bg-black");
         banner.classList.add("bg-red-700");
     } else {
-        banner.innerText = "ENVIO GRATUITO EN PEDIDOS SUPERIORES A $50"
-
+        banner.innerText = "ENVIO GRATUITO EN PEDIDOS SUPERIORES A $50";
         banner.classList.remove("bg-red-700");
         banner.classList.add("bg-black");
     }
-}
-
+};
 banner.addEventListener("click", cambiarAnuncui);
 
 const contenedor = document.getElementById("contenedor-consolas");
@@ -26,30 +23,30 @@ const cargarTienda = async () => {
         const respuesta = await fetch("/data/mandos.json");
         //verificar la respuesta
         if (!respuesta.ok) throw new Error("Error en la red");
-        //conervit el cuerpo de la respuesta a un objeto json q se pueda usar 
+        //conervit el cuerpo de la respuesta a un objeto json q se pueda usar
         const datos = await respuesta.json();
         //limpiar en contenedor
         contenedor.innerHTML = "";
         //recorrer la lista de mandos
-        datos.forEach((mando) => {
+        datos.forEach((mandos) => {
             contenedor.innerHTML += `
                 <div class="p-8 border rounded-lg dark:border-gray-700 hover:border-blue-500 transition-colors group bg-slate-800 shadow-xl">
                     <div class="relative overflow-hidden rounded-lg h-32 mb-4 bg-slate-700">
                         <img class="object-contain w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                            src="${mando.imagen}" alt="${mando.Modelo}">
+                            src="${mandos.imagen}" alt="${mandos.Modelo}">
                     </div>
 
                     <div class="flex flex-col justify-between">
                         <div>
-                            <h1 class="font-bold text-white uppercase text-sm line-clamp-1 mb-1">${mando.Modelo}</h1>
+                            <h1 class="font-bold text-white uppercase text-sm line-clamp-1 mb-1">${mandos.Modelo}</h1>
                             <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
-                                ${mando.Precio}
+                                ${mandos.Precio}
                             </span>
                         </div>
                         <div class="flex items-center justify-between mt-6">
                             <button 
-                            data-titulo="${mando.Modelo}" 
-                            data-precio="${mando.Precio}"
+                            data-titulo="${mandos.Modelo}" 
+                            data-precio="${mandos.Precio}"
                             class="btn-agregar bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg transition-all active:scale-95">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -59,41 +56,40 @@ const cargarTienda = async () => {
                     </div>
                 </div>
             `;
-
         });
-    } catch(error){
-            console.log("Error" , error);
-            contenedor.innerHTML=`<p class="text-red-700 text-center col-span-full">Verificar la conexion</p>`;
-        }
-}
+    } catch (error) {
+        console.log("Error", error);
+        contenedor.innerHTML = `<p class="text-red-700 text-center col-span-full">Verificar la conexion</p>`;
+    }
+};
 cargarTienda();
 
 //localStore
 //intentar recuperar los libros elegidos por el usuario y si no elgine ninguno no nos devuelve nada
-let carrito=JSON.parse(localStorage.getItem("carrito-mandos"))||[];
-
+let carrito = JSON.parse(localStorage.getItem("carrito-mandos")) || [];
 //funcuion para actualizar el carrito
-const actualizarCotador = () =>{
+const actualizarContador = () => {
     const contador = document.getElementById("carrito-contador");
-    //si existe el contador que le pongamos la longitud del carrito
-    if(contador)
-        contador.innerText=carrito.length;
+    if (contador) contador.innerText = carrito.length;
 };
-    contenedor.addEventListener("click", (e) =>{
-        const boton = e.target.closest(".btn-agregar");
-        if(boton){
-            const titulo = boton.dataset.Modelo;
-            const precio = boton.dataset.Precio;
+actualizarContador();
 
-            //crear un objeto con la informacion del libro
-            const modelo = {
-                Modelo:titulo, Precio:precio
-            };
+contenedor.addEventListener("click", (e) => {
+    const boton = e.target.closest(".btn-agregar");
+    if (boton) {
+        const title = boton.dataset.titulo;
+        const price = boton.dataset.precio;
 
-            //agregar al carrito
-            carrito.push(modelo);
-        
-            localStorage.setItem("carrito-mandos", JSON.stringify(carrito ));
-            actualizarCotador();
-        }
-    })
+        //crear un objeto con la informacion del libro
+        const modelo = {
+            Modelo: title,
+            Precio: price,
+        };
+
+        //agregar al carrito
+        carrito.push(modelo);
+
+        localStorage.setItem("carrito-mandos", JSON.stringify(carrito));
+        actualizarContador();
+    }
+});
